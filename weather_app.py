@@ -1,82 +1,98 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import ttk, messagebox
 import requests
-import time
+from datetime import datetime
+import ttkbootstrap as tb  
 
-# --- Function to Get Weather ---
-def getWeather(event=None):
-    city = textField.get()
+API_KEY = "YOUR_API_KEY"  # replace with your OpenWeather API key
+
+
+# ---------------- Emoji Mapper ----------------
+def get_weather_emoji(desc):
+    desc = desc.lower()
+    if "clear" in desc: return "☀️"
+    if "cloud" in desc: return "☁️"
+    if "rain" in desc: return "🌧️"
+    if "snow" in desc: return "❄️"
+    if "thunder" in desc: return "⛈️"
+    return "🌍"
+
+
+# ---------------- Fetch Weather ----------------
+def get_weather():
+    city = city_var.get().strip()
     if not city:
-        messagebox.showwarning("Input Error", "Please enter a city name.")
+        messagebox.showwarning("⚠️", "Please enter a city name")
         return
 
-    api_key = "OPENWEATHER_API_KEY"
-    api = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
-
     try:
-        response = requests.get(api)
-        json_data = response.json()
+        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric"
+        data = requests.get(url).json()
 
-        if json_data.get("cod") != 200:
-            label1.config(text="❌ City not found!", fg="red")
-            label2.config(text="")
+        if data.get("cod") != 200:
+            messagebox.showerror("Error", "City not found!")
             return
 
-        condition = json_data['weather'][0]['main']
-        temp = int(json_data['main']['temp'] - 273.15)
-        min_temp = int(json_data['main']['temp_min'] - 273.15)
-        max_temp = int(json_data['main']['temp_max'] - 273.15)
-        pressure = json_data['main']['pressure']
-        humidity = json_data['main']['humidity']
-        wind = json_data['wind']['speed']
-        sunrise = time.strftime('%I:%M:%S %p', time.gmtime(json_data['sys']['sunrise'] + json_data['timezone']))
-        sunset = time.strftime('%I:%M:%S %p', time.gmtime(json_data['sys']['sunset'] + json_data['timezone']))
+        city_name = f"{data['name']}, {data['sys']['country']}"
+        temp = data["main"]["temp"]
+        feels = data["main"]["feels_like"]
+        condition = data["weather"][0]["description"].title()
+        emoji = get_weather_emoji(condition)
 
-        final_info = f"{condition}\n{temp}°C"
-        final_data = (
-            f"\nMin Temp: {min_temp}°C"
-            f"\nMax Temp: {max_temp}°C"
-            f"\nPressure: {pressure} hPa"
-            f"\nHumidity: {humidity}%"
-            f"\nWind Speed: {wind} m/s"
-            f"\nSunrise: {sunrise}"
-            f"\nSunset: {sunset}"
-        )
-
-        label1.config(text=final_info, fg="#222")
-        label2.config(text=final_data, fg="#444")
+        city_label.config(text=f"📍 {city_name}")
+        temp_label.config(text=f"🌡️ {temp:.1f}°C")
+        feels_label.config(text=f"🤔 Feels Like {feels:.1f}°C")
+        cond_label.config(text=f"{emoji} {condition}")
 
     except Exception as e:
-        label1.config(text="⚠️ Error fetching data", fg="red")
-        label2.config(text=str(e))
+        messagebox.showerror("Error", str(e))
 
 
-# --- UI Setup ---
-canvas = tk.Tk()
-canvas.geometry("600x550")
-canvas.title("🌤️ Weather App")
-canvas.config(bg="#e0f7fa")
+# ---------------- UI ----------------
+root = tk.Tk()
+root.title("🌤️ Weather App")
+root.geometry("400x350")
+root.configure(bg="#87CEEB")  # Sky Blue background
 
-# --- Fonts ---
-font_title = ("Poppins", 35, "bold")
-font_info = ("Poppins", 15, "bold")
+# --- Header Bar ---
+header = tk.Frame(root, bg="#FFD43B", height=50)
+header.pack(fill="x")
+title = tk.Label(header, text="Weather App", bg="#FFD43B", fg="black",
+                 font=("Arial", 16, "bold"))
+title.pack(pady=10)
 
-# --- Entry Field ---
-textField = tk.Entry(canvas, justify='center', width=20, font=font_title, bg="white", fg="black")
-textField.pack(pady=20)
-textField.focus()
-textField.bind('<Return>', getWeather)
+# --- Search Frame ---
+search_frame = tk.Frame(root, bg="#87CEEB")
+search_frame.pack(pady=10)
 
-# --- Get Weather Button ---
-btn = tk.Button(canvas, text="Get Weather", command=getWeather, font=font_info, bg="#4dd0e1", fg="white", relief='flat', padx=10, pady=5)
-btn.pack(pady=10)
+city_var = tk.StringVar()
+city_entry = tk.Entry(search_frame, textvariable=city_var,
+                      font=("Arial", 12), width=20)
+city_entry.grid(row=0, column=0, padx=5)
 
-# --- Labels for Output ---
-label1 = tk.Label(canvas, font=font_title, bg="#e0f7fa")
-label1.pack()
+btn = tk.Button(search_frame, text="Get Weather",
+                bg="#FFD43B", fg="black", font=("Arial", 10, "bold"),
+                command=get_weather)
+btn.grid(row=0, column=1, padx=5)
 
-label2 = tk.Label(canvas, font=font_info, justify="left", bg="#e0f7fa")
-label2.pack()
+# --- Card (white box) ---
+card = tk.Frame(root, bg="#FFF8DC", bd=2, relief="ridge")
+card.pack(pady=20, padx=20, fill="both")
 
-canvas.mainloop()
+city_label = tk.Label(card, text="📍 City, Country",
+                      bg="#FFF8DC", fg="black", font=("Arial", 12, "bold"))
+city_label.pack(pady=5)
 
+temp_label = tk.Label(card, text="🌡️ --°C",
+                      bg="#FFF8DC", fg="black", font=("Arial", 14))
+temp_label.pack(pady=5)
+
+feels_label = tk.Label(card, text="🤔 Feels Like --°C",
+                       bg="#FFF8DC", fg="black", font=("Arial", 12))
+feels_label.pack(pady=5)
+
+cond_label = tk.Label(card, text="☀️ Condition",
+                      bg="#FFF8DC", fg="black", font=("Arial", 12))
+cond_label.pack(pady=5)
+
+root.mainloop()
