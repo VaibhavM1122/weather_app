@@ -1,25 +1,61 @@
-# 🌤️ Weather App - Python Tkinter
+# 🌤️ Desktop Weather App
 
-A simple desktop weather application built using Python, Tkinter, and the OpenWeatherMap API. Get real-time weather updates for any city worldwide.
+A simple and interactive **Weather App** built using **Python (Tkinter + Requests)** and powered by the **OpenWeatherMap API**.  
+It fetches **real-time weather data** and displays it in a **colorful, emoji-rich desktop interface**. 🚀
 
-## 📸 Screenshot
-![Screenshot 2025-06-18 143553](https://github.com/user-attachments/assets/34f23396-4a03-40dd-9db4-714d96818824)
+---
+
+## ✨ Features
+
+- 🔍 Search weather by **city name**
+- 🌡️ Displays **temperature** and **feels like**
+- ⛅ Shows **weather condition with emoji**
+- 💧 Humidity, 💨 Wind Speed, 🌫️ Visibility
+- 🌅 Sunrise & 🌇 Sunset times
+- ⚡ Fast and lightweight
+
+---
 
 
-## 🚀 Features
-- Search current weather by city name
-- Displays temperature, humidity, wind speed, sunrise & sunset
-- Clean and user-friendly GUI
-- Error handling for invalid inputs or network issues
+## 🛠️ Tech Stack
 
-## 🛠️ Built With
-- Python
-- Tkinter
-- OpenWeatherMap API
-- Requests
+- **Python 3**
+- **Tkinter** → GUI  
+- **Requests** → API calls  
+- **OpenWeather API** → Weather data  
 
-## 🔧 Installation
-1. Clone the repository or download the `.py` file.
-2. Install dependencies:
+---
+
+## 🚀 Installation & Setup
+
+1. Clone this repository:
    ```bash
-   pip install requests
+   git clone https://github.com/VaibhavM1122/weather-app.git
+   cd weather-app
+2.Install dependencies:
+- pip install requests pillow
+- pip install requests ttkbootstrap
+
+3.Get a free API key 
+- Open Weather API: https://openweathermap.org/api
+- Add your API key inside the script:
+- API_KEY = "your_api_key_here"
+
+  ## 📬 Contact
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/vaibhavm1122/)  
+[![Email](https://img.shields.io/badge/Email-Contact-red?style=flat&logo=gmail)](mailto:mahaleva0012@gmail.com.com)  
+[![GitHub](https://img.shields.io/badge/GitHub-Follow-black?style=flat&logo=github)](https://github.com/VaibhavM1122)
+
+
+
+
+⭐ If you like this project, please give it a star on GitHub!
+
+---
+
+✅ This version is **combined** (badges + features + setup + screenshots + demo + roadmap).  
+
+
+
+
