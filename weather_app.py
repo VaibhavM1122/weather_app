@@ -10,7 +10,7 @@ def getWeather(event=None):
         messagebox.showwarning("Input Error", "Please enter a city name.")
         return
 
-    api_key = "06c921750b9a82d8f5d1294e1586276f"
+    api_key = "OPENWEATHER_API_KEY"
     api = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
 
     try:
@@ -79,3 +79,4 @@ label2 = tk.Label(canvas, font=font_info, justify="left", bg="#e0f7fa")
 label2.pack()
 
 canvas.mainloop()
+
