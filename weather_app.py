@@ -96,3 +96,4 @@ cond_label = tk.Label(card, text="☀️ Condition",
 cond_label.pack(pady=5)
 
 root.mainloop()
+
