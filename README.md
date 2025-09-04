@@ -39,7 +39,7 @@ It fetches **real-time weather data** and displays it in a **colorful, emoji-ric
 3.Get a free API key 
 - Open Weather API: https://openweathermap.org/api
 - Add your API key inside the script:
-- API_KEY = "your_api_key_here"
+- API_KEY = " "YOUR_API_KEY""
 
   ## 📬 Contact
 
